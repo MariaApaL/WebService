@@ -1,0 +1,48 @@
+package edu.fpdual.webservices.service;
+
+import edu.fpdual.webservices.model.conector.MySQLConnector;
+import edu.fpdual.webservices.model.dao.UserDao;
+import edu.fpdual.webservices.model.manager.UserManager;
+import edu.fpdual.webservices.model.manager.impl.UserManagerImpl;
+
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+public class UserService {
+
+    private final UserManager userManager;
+
+    public UserService(UserManagerImpl userManager){
+
+        this.userManager = userManager;
+    }
+
+
+
+    public List<UserDao> findAll() throws SQLException, ClassNotFoundException {
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.findAll(con);
+        }
+    }
+
+
+    public boolean delete(Integer id) throws SQLException, ClassNotFoundException {
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.delete(con, id);
+        }
+    }
+
+    public int resgiter(UserDao user) throws SQLException, ClassNotFoundException {
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.register(con, user);
+        }
+    }
+
+    public boolean update(UserDao user) throws SQLException, ClassNotFoundException {
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.update(con, user);
+        }
+    }
+
+}

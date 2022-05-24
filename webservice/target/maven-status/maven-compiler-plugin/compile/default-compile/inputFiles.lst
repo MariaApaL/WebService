@@ -1,1 +1,14 @@
-C:\Users\m.andrade.soriano\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservice\MyResource.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\manager\Manager.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\api\dto\Notification.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\conector\MySQLConnector.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\controller\NotificationController.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\controller\CityController.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\manager\impl\UserManagerImpl.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\dao\City.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\service\UserService.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\conector\MySQLConstants.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\MyResource.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\dao\User.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\manager\impl\CityManagerImpl.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\controller\UserController.java
+C:\Users\maria.luque.lopez\IdeaProjects\WebService\webservice\src\main\java\edu\fpdual\webservices\model\manager\UserManager.java
