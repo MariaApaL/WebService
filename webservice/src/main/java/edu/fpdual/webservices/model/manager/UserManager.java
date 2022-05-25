@@ -17,4 +17,12 @@ public interface UserManager extends Manager<UserDao,Integer> {
      */
      UserDao findUserByName(Connection con, String player_name)  throws SQLException, ClassNotFoundException;
 
+    /**
+     * Finds all the entities in the DB based on a list of ids.
+     *
+     * @param con DB connection
+     * @param id Entities id to search for.
+     * @return a {@link UserDao}
+     */
+    UserDao findById(Connection con, U id)  throws SQLException, ClassNotFoundException;
 }

@@ -33,7 +33,7 @@ public class UserService {
         }
     }
 
-    public int resgiter(UserDao user) throws SQLException, ClassNotFoundException {
+    public int register(UserDao user) throws SQLException, ClassNotFoundException {
         try (Connection con = new MySQLConnector().getMySQLConnection()) {
             return userManager.register(con, user);
         }
@@ -45,4 +45,17 @@ public class UserService {
         }
     }
 
+    public UserDao findUserByName (String player_name) throws SQLException, ClassNotFoundException {
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.findUserByName(con, player_name);
+        }
+
+    }
+
+    public UserDao findById (Integer idplayer)  throws SQLException, ClassNotFoundException{
+        try (Connection con = new MySQLConnector().getMySQLConnection()) {
+            return userManager.findById(con, idplayer);
+        }
+
+    }
 }

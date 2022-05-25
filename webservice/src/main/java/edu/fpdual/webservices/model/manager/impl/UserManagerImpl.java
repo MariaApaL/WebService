@@ -176,5 +176,39 @@ public class UserManagerImpl implements UserManager {
             return null;
         }
     }
+
+    @Override
+    public UserDao findById(Connection con, Integer idplayer){
+        //prepare SQL statement
+        String sql = "select * "
+                + "from player"
+                + "where idplayer = ? ";
+
+        // Create general statement
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            //Add Parameters
+            stmt.setInt(1, idplayer);
+            // Queries the DB
+            ResultSet result = stmt.executeQuery();
+            // Set before first registry before going through it.
+            result.beforeFirst();
+
+            // Initialize variable
+            UserDao userDao = null;
+
+            // Run through each result
+            while (result.next()) {
+                // Initializes a city per result
+                userDao = new UserDao(result);
+            }
+
+            return userDao;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
     }
 

@@ -74,7 +74,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>FpDualWebService</finalName>
+        <finalName>webservice</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

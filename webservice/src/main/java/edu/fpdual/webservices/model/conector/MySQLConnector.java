@@ -11,7 +11,7 @@ import java.util.Properties;
 
 /**
  * Class responsible for creation of MySQL DB connection.
- * @author jose.m.prieto.villar
+ *
  *
  */
 public class MySQLConnector {
