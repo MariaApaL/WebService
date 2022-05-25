@@ -24,5 +24,5 @@ public interface UserManager extends Manager<UserDao,Integer> {
      * @param id Entities id to search for.
      * @return a {@link UserDao}
      */
-    UserDao findById(Connection con, U id)  throws SQLException, ClassNotFoundException;
+    UserDao findById(Connection con, Integer id)  throws SQLException, ClassNotFoundException;
 }

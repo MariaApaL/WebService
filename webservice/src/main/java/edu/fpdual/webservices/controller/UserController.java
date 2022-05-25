@@ -1,6 +1,7 @@
 package edu.fpdual.webservices.controller;
 
 
+import edu.fpdual.webservices.model.dao.UserDao;
 import jakarta.ws.rs.*;
 import edu.fpdual.webservices.service.UserService;
 import edu.fpdual.webservices.model.manager.impl.UserManagerImpl;
