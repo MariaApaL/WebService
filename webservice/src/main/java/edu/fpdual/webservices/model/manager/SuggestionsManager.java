@@ -1,9 +1,12 @@
 package edu.fpdual.webservices.model.manager;
 
 import edu.fpdual.webservices.model.conector.MySQLConnector;
+import edu.fpdual.webservices.model.dao.Suggestion;
 
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface SuggestionsManager {
@@ -15,6 +18,8 @@ public interface SuggestionsManager {
      * @return a {@link Boolean}
      */
     public int insertSuggestion(Connection con, String name, String text)throws SQLException;
+
+    public Suggestion findSuggestion (Connection con, String player_name);
 
     public MySQLConnector getConnector();
 

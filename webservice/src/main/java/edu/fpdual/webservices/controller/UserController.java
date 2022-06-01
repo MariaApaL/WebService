@@ -40,19 +40,18 @@ public class UserController{
         if (user==null) {
             return Response.status(400).entity("Incorrect Parameters").build();
         } else {
-            return Response.ok().entity(userService.validateUser(user)).build();
+            return Response.ok().entity(userService.validateUser(user.getPlayer_name(),user.getPassword())).build();
         }
     }
 
     @DELETE
-    @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteUser(@PathParam("name") String name) {
+    public Response deleteUser(UserDao user) {
         try {
-            boolean deleteUser = userService.findUser(name);
-            if (deleteUser!=false) {
-                if (userService.deleteUser(name)) {
-                    return Response.status(200).entity(deleteUser).build();
+            boolean delete = userService.validateUser(user.getPlayer_name(), user.getPassword());
+            if (delete) {
+                if (userService.deleteUser(user) ){
+                    return Response.status(200).entity(userService.deleteUser(user)).build();
                 } else {
                     return Response.status(304).entity("User Was Not Deleted").build();
                 }
@@ -67,9 +66,9 @@ public class UserController{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertUserReg() {
+    public Response insertUserReg(String name, String password, String email) {
         try {
-            int registedUser = userService.insertUserReg();
+            int registedUser = userService.insertUserReg(name, password,email);
             if (registedUser > 1) {
                 return Response.status(201).entity(userService.findUser(name)).build();
             } else {
@@ -81,15 +80,14 @@ public class UserController{
     }
 
     @PUT
-    @Path("/{password}/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updatePassword(@PathParam("password") String password, @PathParam("name") String name) {
+    public Response updatePassword(UserDao user, String password) {
         try {
-            boolean deletedUser = userService.findUser(name);
-            if (deletedUser != false) {
-                if (userService.updatePassword(password,name)) {
-                    return Response.status(200).entity(userService.findUser(name)).build();
+            boolean update = userService.validateUser(user.getPlayer_name(),user.getPassword());
+            if (update) {
+                if (userService.updatePassword(user,password)) {
+                    return Response.status(200).entity(userService.findUser(user.getPlayer_name())).build();
                 } else {
                     return Response.status(500).entity("Internal Error During User Update").build();
                 }

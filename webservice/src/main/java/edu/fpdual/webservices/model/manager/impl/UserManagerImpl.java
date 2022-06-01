@@ -13,7 +13,7 @@ import java.util.List;
 public class UserManagerImpl implements UserManager {
 
     @Override
-    public boolean findUser(Connection con, String player_name) {
+    public UserDao findUser(Connection con, String player_name) {
         //prepare SQL statement
         String sql = "select * "
                 + "from PLAYER "
@@ -24,9 +24,6 @@ public class UserManagerImpl implements UserManager {
             //Add Parameters
             stmt.setString(1, player_name);
 
-
-
-
             // Queries the DB
             ResultSet result = stmt.executeQuery();
             // Set before first registry before going through it.
@@ -34,14 +31,17 @@ public class UserManagerImpl implements UserManager {
 
             // Initialize variable
             UserDao user = null;
-
-            return result.next();
+            while(result.next()){
+                user=(new UserDao(result));
+            }
+            return user;
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
+
     @Override
     public int insertUser(Connection con, String player_name, String password, String mail) {
         //prepare SQL statement
@@ -58,24 +58,17 @@ public class UserManagerImpl implements UserManager {
             if(affectedRows<=0){
                 return 0;
             }
-            // Queries the DB
+// Queries the DB
             ResultSet resultSet = stmt.getGeneratedKeys();
-            // Set before first registry before going through it
+// Set before first registry before going through it
             resultSet.beforeFirst();
             resultSet.next();
-
-
-            // Queries the DB
+// Queries the DB
             return resultSet.getInt(1);
 
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
-
-
-
-
-
 
         }
     }
@@ -100,15 +93,15 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public boolean deleteUser(Connection con, String name) throws SQLException {
+    public boolean deleteUser(Connection con, UserDao user) throws SQLException {
         //prepare SQL statement
-        String sql = "DELETE from player WHERE player_name = ?";
+        String sql = "DELETE from player WHERE idplayer = ?";
 
         // Create general statement
         try (PreparedStatement stmt= con.prepareStatement(sql)){
 
             //Add Parameters
-            stmt.setString(1, name);
+            stmt.setInt(1, user.getIdplayer());
 
             // Queries the DB
             return stmt.executeUpdate() > 0;
@@ -118,41 +111,7 @@ public class UserManagerImpl implements UserManager {
         }
 
     }
-    @Override
-    public List ranking(Connection con) throws SQLException {
-        //prepare SQL statement
-        String sql = "select player_name  from PLAYER  order  by  num_game desc limit 10";
-
-        // Create general statement
-        try(Statement stmt=con.createStatement()){
-            // Queries the DB
-            ResultSet result = stmt.executeQuery(sql);
-            // Set before first registry before going through it
-            result.beforeFirst();
-
-            // Initialize variable
-            List players = new ArrayList();
-
-            // Run through each result
-            while (result.next()) {
-               /* int a=1;
-               String player=result;
-                String aux= String.valueOf(a);
-                */
-
-
-                // Initializes a player per result
-                players.add(result.getString(1));
-
-            }
-
-            return players;
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+/*
     @Override
     public int numGame(Connection con, String name) throws SQLException {
         //prepare SQL statement
@@ -177,9 +136,9 @@ public class UserManagerImpl implements UserManager {
             return 0;
         }
     }
-
+*/
     @Override
-    public boolean updatePassword(Connection con, String contraseña, String name) throws SQLException {
+    public boolean updatePassword(Connection con, UserDao user, String password) throws SQLException {
         //prepare SQL statement
         String sql="Update player set password= ?where player_name=?";
 
@@ -188,8 +147,8 @@ public class UserManagerImpl implements UserManager {
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
 
                 //Add Parameters
-                stmt.setString(1, contraseña);
-                stmt.setString(2, name);
+                stmt.setString(1, password);
+                stmt.setString(2, user.getPlayer_name());
 
                 // Queries the DB
                 return stmt.executeUpdate() > 0;
@@ -201,7 +160,7 @@ public class UserManagerImpl implements UserManager {
 
     }
     @Override
-    public boolean validateUser(Connection con, String password, String name) throws SQLException{
+    public boolean validateUser(Connection con, String name, String password) throws SQLException{
 
         //prepare SQL statement
         String sql = "select * "
@@ -230,33 +189,6 @@ public class UserManagerImpl implements UserManager {
             e.printStackTrace();
             return false;
         }
-    }
-
-    @Override
-    public String getMail(Connection con, String name) throws SQLException{
-
-        //prepare SQL statement
-        String sql = "select correo  from player  where player_name = ?";
-        // Create general statement
-        try(PreparedStatement stmt=con.prepareStatement(sql)){
-
-            //Add Parameters
-            stmt.setString( 1, name);
-            // Queries the DB
-            ResultSet result = stmt.executeQuery();
-            // Set before first registry before going through it
-            result.beforeFirst();
-            String resultado=null;
-            if(result.next()){
-                resultado = result.getString(1);
-            }
-            // Queries the DB
-            return resultado;
-        }catch(SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-
     }
 
 

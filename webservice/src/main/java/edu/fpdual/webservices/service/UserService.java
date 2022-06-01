@@ -18,13 +18,15 @@ public class UserService {
         this.userManager = userManager;
     }
 
-    public boolean findUser(String name) throws SQLException, ClassNotFoundException {
+
+    public UserDao findUser(String name) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
 
             return userManager.findUser(con, name);
+
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
         }
 
@@ -39,7 +41,7 @@ public class UserService {
 
     }
 
-
+/*
     public boolean newGame(String name) throws SQLException, ClassNotFoundException{
 
         try(Connection con=userManager.getConnector().getMySQLConnection()){
@@ -48,43 +50,30 @@ public class UserService {
 
 
     }
-
-    public boolean deleteUser(String name) throws SQLException, ClassNotFoundException {
+*/
+    public boolean deleteUser(UserDao user) throws SQLException, ClassNotFoundException {
 
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.deleteUser(con,name);
+            return userManager.deleteUser(con,user);
         }
     }
-
-    public List ranking() throws SQLException, ClassNotFoundException{
-        try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.ranking(con);
-        }
-    }
-
+/*
     public int numGame(String name) throws SQLException, ClassNotFoundException{
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
             return userManager.numGame(con, name);
         }
     }
 
-
-    public boolean updatePassword( String contraseña, String name) throws SQLException, ClassNotFoundException {
+*/
+    public boolean updatePassword( UserDao user, String password) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.updatePassword(con, contraseña, name);
+            return userManager.updatePassword(con, user, password);
         }
 
     }
-    public boolean validateUser( UserDao user) throws SQLException, ClassNotFoundException {
+    public boolean validateUser(String name, String password) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.validateUser(con, user.getPassword(),user.getPlayer_name());
-        }
-
-    }
-
-    public String getMail(String name) throws SQLException, ClassNotFoundException {
-        try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.getMail(con, name);
+            return userManager.validateUser(con, name,password);
         }
 
     }

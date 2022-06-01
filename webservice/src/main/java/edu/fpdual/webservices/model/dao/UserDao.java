@@ -15,6 +15,7 @@ public class UserDao implements Comparable<UserDao> {
         String player_name;
         String password;
         int num_game;
+        String mail;
 
 
         public UserDao(){
@@ -27,6 +28,7 @@ public class UserDao implements Comparable<UserDao> {
             this.player_name = result.getString("player_name");
             this.password = result.getString("password");
             this.num_game = result.getInt("num_game");
+            this.mail = result.getString("correo");
         } catch (SQLException e) {
             e.printStackTrace();
         }

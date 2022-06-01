@@ -2,11 +2,14 @@ package edu.fpdual.webservices.model.manager.impl;
 
 import edu.fpdual.webservices.model.conector.MySQLConnector;
 
+import edu.fpdual.webservices.model.dao.Suggestion;
+import edu.fpdual.webservices.model.dao.UserDao;
 import edu.fpdual.webservices.model.manager.SuggestionsManager;
 
 import java.sql.*;
 
 public class SuggestionsManagerImpl implements SuggestionsManager {
+
     @Override
     public int insertSuggestion(Connection con,String name, String text) throws SQLException {
         //prepare SQL statement
@@ -39,6 +42,37 @@ public class SuggestionsManagerImpl implements SuggestionsManager {
 
         }
     }
+
+    @Override
+    public Suggestion findSuggestion (Connection con, int id) {
+        //prepare SQL statement
+        String sql = "select * "
+                + "from suggestions "
+                + "where idSuggestions = ?";
+
+        // Create general statement
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            //Add Parameters
+            stmt.setInt(1, id);
+
+            // Queries the DB
+            ResultSet result = stmt.executeQuery();
+            // Set before first registry before going through it.
+            result.beforeFirst();
+
+            // Initialize variable
+            Suggestion sugu = null;
+            while(result.next()){
+                sugu=(new Suggestion(result));
+            }
+            return sugu;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public MySQLConnector getConnector() {
         return new MySQLConnector();
