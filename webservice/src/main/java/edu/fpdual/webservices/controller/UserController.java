@@ -18,41 +18,41 @@ public class UserController{
     private final UserService userService;
 
 
-    public UserController(UserService userService) {
+    public UserController() {
+
         this.userService = new UserService(new UserManagerImpl());
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll() throws SQLException, ClassNotFoundException {
-        return Response.ok().entity(userService.findAll()).build();
+    @Path("/{name}")
+    public Response findUser(@PathParam("name") String name) throws SQLException, ClassNotFoundException {
+        return Response.ok().entity(userService.findUser(name)).build();
     }
 
-    @GET
+
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{name}")
-    public Response findUserByName(@PathParam("name") String player_name) {
-        try {
-            if (player_name.equals("") || player_name.isEmpty()) {
-                return Response.status(400).entity("Incorrect Parameters").build();
-            } else {
-                return Response.ok().entity(userService.findUserByName(player_name)).build();
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            return Response.status(500).entity("Internal Error During DB Interaction").build();
+    @Consumes(MediaType.APPLICATION_JSON)
+
+    public Response validateUser(UserDao user) throws SQLException, ClassNotFoundException {
+        if (user==null) {
+            return Response.status(400).entity("Incorrect Parameters").build();
+        } else {
+            return Response.ok().entity(userService.validateUser(user)).build();
         }
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") Integer id) {
+    public Response deleteUser(@PathParam("name") String name) {
         try {
-            UserDao deleteId = userService.findById(id);
-            if (deleteId != null) {
-                if (userService.delete(id)) {
-                    return Response.status(200).entity(deleteId).build();
+            boolean deleteUser = userService.findUser(name);
+            if (deleteUser!=false) {
+                if (userService.deleteUser(name)) {
+                    return Response.status(200).entity(deleteUser).build();
                 } else {
                     return Response.status(304).entity("User Was Not Deleted").build();
                 }
@@ -67,11 +67,11 @@ public class UserController{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response register(UserDao userDao) {
+    public Response insertUserReg() {
         try {
-            int registedUser = userService.register(userDao);
-            if (registedUser > 0) {
-                return Response.status(201).entity(userService.findById(registedUser)).build();
+            int registedUser = userService.insertUserReg();
+            if (registedUser > 1) {
+                return Response.status(201).entity(userService.findUser(name)).build();
             } else {
                 return Response.status(500).entity("Internal Error During Creating New User").build();
             }
@@ -81,34 +81,20 @@ public class UserController{
     }
 
     @PUT
+    @Path("/{password}/{name}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(UserDao userDao) {
+    public Response updatePassword(@PathParam("password") String password, @PathParam("name") String name) {
         try {
-            UserDao deletedId = userService.findById(userDao.getIdplayer());
-            if (deletedId != null) {
-                if (userService.update(userDao)) {
-                    return Response.status(200).entity(userService.findById(userDao.getIdplayer())).build();
+            boolean deletedUser = userService.findUser(name);
+            if (deletedUser != false) {
+                if (userService.updatePassword(password,name)) {
+                    return Response.status(200).entity(userService.findUser(name)).build();
                 } else {
                     return Response.status(500).entity("Internal Error During User Update").build();
                 }
             } else {
                 return Response.status(404).entity("User Not Found").build();
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            return Response.status(500).entity("Internal Error During DB Interaction").build();
-        }
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public Response findById(@PathParam("id") Integer idplayer) {
-        try {
-            if (idplayer == null) {
-                return Response.status(400).entity("Incorrect Parameters").build();
-            } else {
-                return Response.ok().entity(userService.findById(idplayer)).build();
             }
         } catch (SQLException | ClassNotFoundException e) {
             return Response.status(500).entity("Internal Error During DB Interaction").build();

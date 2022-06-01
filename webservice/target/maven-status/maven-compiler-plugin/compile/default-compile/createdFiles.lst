@@ -1,0 +1,7 @@
+edu\fpdual\webservices\model\manager\UserManager.class
+edu\fpdual\webservices\model\conector\MySQLConnector.class
+edu\fpdual\webservices\model\manager\impl\SuggestionsManagerImpl.class
+edu\fpdual\webservices\MyResource.class
+edu\fpdual\webservices\model\conector\MySQLConstants.class
+edu\fpdual\webservices\model\manager\SuggestionsManager.class
+edu\fpdual\webservices\model\dao\UserDao.class

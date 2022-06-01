@@ -1,9 +1,9 @@
 package edu.fpdual.webservices.service;
 
-import edu.fpdual.webservices.model.conector.MySQLConnector;
+
 import edu.fpdual.webservices.model.dao.UserDao;
 import edu.fpdual.webservices.model.manager.UserManager;
-import edu.fpdual.webservices.model.manager.impl.UserManagerImpl;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,49 +13,83 @@ public class UserService {
 
     private final UserManager userManager;
 
-    public UserService(UserManagerImpl userManager){
 
+    public UserService(UserManager userManager) {
         this.userManager = userManager;
     }
 
+    public boolean findUser(String name) throws SQLException, ClassNotFoundException {
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
 
-
-    public List<UserDao> findAll() throws SQLException, ClassNotFoundException {
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.findAll(con);
+            return userManager.findUser(con, name);
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
         }
-    }
-
-
-    public boolean delete(Integer id) throws SQLException, ClassNotFoundException {
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.delete(con, id);
         }
-    }
 
-    public int register(UserDao user) throws SQLException, ClassNotFoundException {
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.register(con, user);
-        }
-    }
 
-    public boolean update(UserDao user) throws SQLException, ClassNotFoundException {
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.update(con, user);
-        }
-    }
 
-    public UserDao findUserByName (String player_name) throws SQLException, ClassNotFoundException {
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.findUserByName(con, player_name);
+    public int insertUserReg(String username, String password, String mail) throws SQLException,ClassNotFoundException{
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.insertUser(con, username, password, mail);
+
+
         }
 
     }
 
-    public UserDao findById (Integer idplayer)  throws SQLException, ClassNotFoundException{
-        try (Connection con = new MySQLConnector().getMySQLConnection()) {
-            return userManager.findById(con, idplayer);
+
+    public boolean newGame(String name) throws SQLException, ClassNotFoundException{
+
+        try(Connection con=userManager.getConnector().getMySQLConnection()){
+            return userManager.updateNumGame(con, name);
+        }
+
+
+    }
+
+    public boolean deleteUser(String name) throws SQLException, ClassNotFoundException {
+
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.deleteUser(con,name);
+        }
+    }
+
+    public List ranking() throws SQLException, ClassNotFoundException{
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.ranking(con);
+        }
+    }
+
+    public int numGame(String name) throws SQLException, ClassNotFoundException{
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.numGame(con, name);
+        }
+    }
+
+
+    public boolean updatePassword( String contraseña, String name) throws SQLException, ClassNotFoundException {
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.updatePassword(con, contraseña, name);
         }
 
     }
+    public boolean validateUser( UserDao user) throws SQLException, ClassNotFoundException {
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.validateUser(con, user.getPassword(),user.getPlayer_name());
+        }
+
+    }
+
+    public String getMail(String name) throws SQLException, ClassNotFoundException {
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.getMail(con, name);
+        }
+
+    }
+
+
+
+
 }
