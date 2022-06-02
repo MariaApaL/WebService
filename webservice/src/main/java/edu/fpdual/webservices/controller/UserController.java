@@ -18,13 +18,13 @@ import java.sql.SQLException;
 public class UserController{
 
     private final UserService userService;
-    private final SuggestionsService suggestionsService;
+   // private final SuggestionsService suggestionsService;
 
 
     public UserController() {
 
         this.userService = new UserService(new UserManagerImpl());
-        this.suggestionsService = new SuggestionsService((new SuggestionsManagerImpl()));
+       // this.suggestionsService = new SuggestionsService((new SuggestionsManagerImpl()));
     }
 
 
@@ -39,6 +39,7 @@ public class UserController{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/validate")
 
     public Response validateUser(UserDao user) throws SQLException, ClassNotFoundException {
         if (user==null) {
@@ -50,12 +51,13 @@ public class UserController{
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteUser(UserDao user) {
         try {
             boolean delete = userService.validateUser(user.getPlayer_name(), user.getPassword());
             if (delete) {
                 if (userService.deleteUser(user) ){
-                    return Response.status(200).entity(userService.deleteUser(user)).build();
+                    return Response.status(200).entity(user).build();
                 } else {
                     return Response.status(304).entity("User Was Not Deleted").build();
                 }
@@ -70,11 +72,11 @@ public class UserController{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertUserReg(String name, String password, String email) {
+    public Response insertUserReg(UserDao user) {
         try {
-            int registedUser = userService.insertUserReg(name, password,email);
+            int registedUser = userService.insertUserReg(user);
             if (registedUser > 1) {
-                return Response.status(201).entity(userService.findUser(name)).build();
+                return Response.status(201).entity(userService.findUser(user.getPlayer_name())).build();
             } else {
                 return Response.status(500).entity("Internal Error During Creating New User").build();
             }
@@ -86,11 +88,11 @@ public class UserController{
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updatePassword(UserDao user, String password) {
+    public Response update(UserDao user) {
         try {
-            boolean update = userService.validateUser(user.getPlayer_name(),user.getPassword());
-            if (update) {
-                if (userService.updatePassword(user,password)) {
+            UserDao userFound = userService.findUser(user.getPlayer_name());
+            if (userFound!=null) {
+                if (userService.update(user)) {
                     return Response.status(200).entity(userService.findUser(user.getPlayer_name())).build();
                 } else {
                     return Response.status(500).entity("Internal Error During User Update").build();
@@ -103,29 +105,7 @@ public class UserController{
         }
     }
 
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/sugges")
-    public Response InsertSuggestion (UserDao user,String suggestion) {
-        try {
-            int suggest=suggestionsService.insertSuggestion(user.getPlayer_name(), suggestion);
-            if(suggest<0) {
 
-
-
-                return Response.status(200).entity(suggestionsService.findSuggestion(user)).build();
-            } else {
-                return Response.status(500).entity("Internal error").build();
-            }
-
-        }
-
-        catch (SQLException | ClassNotFoundException e) {
-            return Response.status(500).entity("Internal Error During DB Interaction").build();
-        }
-
-    }
 
     }
 

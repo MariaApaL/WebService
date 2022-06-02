@@ -28,7 +28,7 @@ public interface UserManager {
 
      * @return a {@link Boolean}
      */
-    public int insertUser(Connection con, String player_name, String password, String mail)throws SQLException;
+    public int insertUser(Connection con, UserDao user)throws SQLException;
     /**
      * player update num_game on DB
      *
@@ -53,7 +53,7 @@ public interface UserManager {
      * @return a {@link List}
      */
 
-    public boolean updatePassword(Connection con, UserDao user, String password) throws SQLException;
+    public boolean update(Connection con, UserDao user) throws SQLException;
     /**
      * Validate that the password is correct.
      *

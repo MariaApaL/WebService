@@ -7,10 +7,7 @@ import edu.fpdual.webservices.model.manager.impl.SuggestionsManagerImpl;
 import edu.fpdual.webservices.model.manager.impl.UserManagerImpl;
 import edu.fpdual.webservices.service.SuggestionsService;
 import edu.fpdual.webservices.service.UserService;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
@@ -29,15 +26,13 @@ public class SuggestionController {
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response InsertSuggestion (UserDao user,String suggestion) {
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response insertSuggestion (@FormParam("name") String name , @FormParam("suggestion") String suggestion) {
         try {
-            int suggest=suggestionsService.insertSuggestion(user.getPlayer_name(), suggestion);
-            if(suggest<0) {
+            int suggest=suggestionsService.insertSuggestion(name, suggestion);
+            if(suggest>0) {
 
-
-
-                    return Response.status(200).entity(suggestionsService.findSuggestion(user)).build();
+                    return Response.status(200).entity(suggestionsService.findSuggestion(name)).build();
                 } else {
                     return Response.status(500).entity("Internal error").build();
                 }

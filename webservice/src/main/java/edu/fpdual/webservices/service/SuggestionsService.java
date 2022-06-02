@@ -28,9 +28,9 @@ public class SuggestionsService {
 
     }
 
-    public Suggestion findSuggestion( UserDao user) throws SQLException, ClassNotFoundException {
+    public Suggestion findSuggestion( String name) throws SQLException, ClassNotFoundException {
         try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
-            return suggestionsManager.findSuggestion(con, user.getPlayer_name());
+            return suggestionsManager.findSuggestion(con,name);
         }
     }
 }

@@ -32,9 +32,9 @@ public class UserService {
 
 
 
-    public int insertUserReg(String username, String password, String mail) throws SQLException,ClassNotFoundException{
+    public int insertUserReg(UserDao user) throws SQLException,ClassNotFoundException{
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.insertUser(con, username, password, mail);
+            return userManager.insertUser(con,user);
 
 
         }
@@ -65,9 +65,9 @@ public class UserService {
     }
 
 */
-    public boolean updatePassword( UserDao user, String password) throws SQLException, ClassNotFoundException {
+    public boolean update( UserDao user) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.updatePassword(con, user, password);
+            return userManager.update(con, user);
         }
 
     }

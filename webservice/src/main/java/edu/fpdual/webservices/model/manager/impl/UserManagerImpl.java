@@ -43,7 +43,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public int insertUser(Connection con, String player_name, String password, String mail) {
+    public int insertUser(Connection con,UserDao user) {
         //prepare SQL statement
         String sql = "Insert into player (PLAYER_NAME, PASSWORD, NUM_GAME , correo) VALUES (?,?, 0,?)";
 
@@ -51,9 +51,9 @@ public class UserManagerImpl implements UserManager {
         // Create general statement
         try (PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             //Add Parameters
-            stmt.setString(1, player_name);
-            stmt.setString(2, password);
-            stmt.setString(3, mail);
+            stmt.setString(1, user.getPlayer_name());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getMail());
             int affectedRows = stmt.executeUpdate();
             if(affectedRows<=0){
                 return 0;
@@ -138,17 +138,18 @@ public class UserManagerImpl implements UserManager {
     }
 */
     @Override
-    public boolean updatePassword(Connection con, UserDao user, String password) throws SQLException {
+    public boolean update(Connection con, UserDao user) throws SQLException {
         //prepare SQL statement
-        String sql="Update player set password= ?where player_name=?";
+        String sql="Update player set password= ? , correo=? where player_name=?";
 
 
             // Create general statement
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
 
                 //Add Parameters
-                stmt.setString(1, password);
-                stmt.setString(2, user.getPlayer_name());
+                stmt.setString(1, user.getPassword());
+                stmt.setString(2, user.getMail());
+                stmt.setString(3, user.getPlayer_name());
 
                 // Queries the DB
                 return stmt.executeUpdate() > 0;
