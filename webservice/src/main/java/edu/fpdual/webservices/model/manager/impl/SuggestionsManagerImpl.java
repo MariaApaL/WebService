@@ -44,16 +44,16 @@ public class SuggestionsManagerImpl implements SuggestionsManager {
     }
 
     @Override
-    public Suggestion findSuggestion (Connection con, int id) {
+    public Suggestion findSuggestion (Connection con, String name) {
         //prepare SQL statement
         String sql = "select * "
                 + "from suggestions "
-                + "where idSuggestions = ?";
+                + "where player_name = ?";
 
         // Create general statement
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             //Add Parameters
-            stmt.setInt(1, id);
+            stmt.setString(1,name);
 
             // Queries the DB
             ResultSet result = stmt.executeQuery();

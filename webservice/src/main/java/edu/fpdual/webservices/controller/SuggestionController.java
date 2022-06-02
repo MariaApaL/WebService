@@ -1,5 +1,6 @@
 package edu.fpdual.webservices.controller;
 
+import edu.fpdual.webservices.model.dao.Suggestion;
 import edu.fpdual.webservices.model.dao.UserDao;
 import edu.fpdual.webservices.model.manager.SuggestionsManager;
 import edu.fpdual.webservices.model.manager.impl.SuggestionsManagerImpl;
@@ -29,21 +30,24 @@ public class SuggestionController {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response InsertSuggestion () {
+    public Response InsertSuggestion (UserDao user,String suggestion) {
         try {
-            boolean update = userService.validateUser(user.getPlayer_name(),user.getPassword());
-            if (update) {
-                if (userService.updatePassword(user,password)) {
-                    return Response.status(200).entity(userService.findUser(user.getPlayer_name())).build();
+            int suggest=suggestionsService.insertSuggestion(user.getPlayer_name(), suggestion);
+            if(suggest<0) {
+
+
+
+                    return Response.status(200).entity(suggestionsService.findSuggestion(user)).build();
                 } else {
-                    return Response.status(500).entity("Internal Error During User Update").build();
+                    return Response.status(500).entity("Internal error").build();
                 }
-            } else {
-                return Response.status(404).entity("User Not Found").build();
+
             }
-        } catch (SQLException | ClassNotFoundException e) {
+
+         catch (SQLException | ClassNotFoundException e) {
             return Response.status(500).entity("Internal Error During DB Interaction").build();
         }
+
     }
 
 

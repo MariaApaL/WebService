@@ -2,6 +2,8 @@ package edu.fpdual.webservices.controller;
 
 
 import edu.fpdual.webservices.model.dao.UserDao;
+import edu.fpdual.webservices.model.manager.impl.SuggestionsManagerImpl;
+import edu.fpdual.webservices.service.SuggestionsService;
 import jakarta.ws.rs.*;
 import edu.fpdual.webservices.service.UserService;
 import edu.fpdual.webservices.model.manager.impl.UserManagerImpl;
@@ -16,11 +18,13 @@ import java.sql.SQLException;
 public class UserController{
 
     private final UserService userService;
+    private final SuggestionsService suggestionsService;
 
 
     public UserController() {
 
         this.userService = new UserService(new UserManagerImpl());
+        this.suggestionsService = new SuggestionsService((new SuggestionsManagerImpl()));
     }
 
 
@@ -97,6 +101,30 @@ public class UserController{
         } catch (SQLException | ClassNotFoundException e) {
             return Response.status(500).entity("Internal Error During DB Interaction").build();
         }
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/sugg")
+    public Response InsertSuggestion (UserDao user,String suggestion) {
+        try {
+            int suggest=suggestionsService.insertSuggestion(user.getPlayer_name(), suggestion);
+            if(suggest<0) {
+
+
+
+                return Response.status(200).entity(suggestionsService.findSuggestion(user)).build();
+            } else {
+                return Response.status(500).entity("Internal error").build();
+            }
+
+        }
+
+        catch (SQLException | ClassNotFoundException e) {
+            return Response.status(500).entity("Internal Error During DB Interaction").build();
+        }
+
     }
 
     }

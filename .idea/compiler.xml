@@ -10,5 +10,8 @@
         <module name="webservice" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="WebService (1)" target="1.5" />
+    </bytecodeTargetLevel>
   </component>
 </project>

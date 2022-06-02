@@ -1,6 +1,7 @@
 package edu.fpdual.webservices.service;
 
 import edu.fpdual.webservices.model.dao.Suggestion;
+import edu.fpdual.webservices.model.dao.UserDao;
 import edu.fpdual.webservices.model.manager.SuggestionsManager;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ public class SuggestionsService {
 
 
     public SuggestionsService(SuggestionsManager suggestionManager) {
+
         this.suggestionsManager = suggestionManager;
     }
 
@@ -26,9 +28,9 @@ public class SuggestionsService {
 
     }
 
-    public Suggestion findSuggestion(Connection con, String player_name) throws SQLException, ClassNotFoundException {
+    public Suggestion findSuggestion( UserDao user) throws SQLException, ClassNotFoundException {
         try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
-            return suggestionsManager.findSuggestion(con, player_name);
+            return suggestionsManager.findSuggestion(con, user.getPlayer_name());
         }
     }
 }

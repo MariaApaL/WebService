@@ -19,7 +19,7 @@ public interface SuggestionsManager {
      */
     public int insertSuggestion(Connection con, String name, String text)throws SQLException;
 
-    public Suggestion findSuggestion (Connection con, String player_name);
+    public Suggestion findSuggestion (Connection con,String name);
 
     public MySQLConnector getConnector();
 
