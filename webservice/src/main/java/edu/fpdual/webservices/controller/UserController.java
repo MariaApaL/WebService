@@ -106,7 +106,7 @@ public class UserController{
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/sugg")
+    @Path("/sugges")
     public Response InsertSuggestion (UserDao user,String suggestion) {
         try {
             int suggest=suggestionsService.insertSuggestion(user.getPlayer_name(), suggestion);
