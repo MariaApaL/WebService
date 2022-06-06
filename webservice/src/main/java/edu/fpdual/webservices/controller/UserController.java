@@ -35,6 +35,21 @@ public class UserController{
         return Response.ok().entity(userService.findUser(name)).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Integer id) {
+        try {
+            if (id == null) {
+                return Response.status(400).entity("Incorrect Parameters").build();
+            } else {
+                return Response.ok().entity(userService.findById(id)).build();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            return Response.status(500).entity("Internal Error During DB Interaction").build();
+        }
+    }
+
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
@@ -45,7 +60,7 @@ public class UserController{
         if (user==null) {
             return Response.status(400).entity("Incorrect Parameters").build();
         } else {
-            return Response.ok().entity(userService.validateUser(user.getPlayer_name(),user.getPassword())).build();
+            return Response.ok().entity(userService.validateUser(user.getIdplayer())).build();
         }
     }
 
@@ -54,7 +69,7 @@ public class UserController{
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteUser(UserDao user) {
         try {
-            boolean delete = userService.validateUser(user.getPlayer_name(), user.getPassword());
+            boolean delete = userService.validateUser(user.getIdplayer());
             if (delete) {
                 if (userService.deleteUser(user) ){
                     return Response.status(200).entity(user).build();
@@ -89,23 +104,22 @@ public class UserController{
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(UserDao user) {
-        try {
-            UserDao userFound = userService.findUser(user.getPlayer_name());
-            if (userFound!=null) {
-                if (userService.update(user)) {
-                    return Response.status(200).entity(userService.findUser(user.getPlayer_name())).build();
+            try {
+                UserDao userToDelete = userService.findById(user.getIdplayer());
+                if (userToDelete != null) {
+                    if (userService.update(user)) {
+                        return Response.status(200).entity(userService.findById(user.getIdplayer())).build();
+                    } else {
+                        return Response.status(500).entity("Internal Error During City Update").build();
+                    }
                 } else {
-                    return Response.status(500).entity("Internal Error During User Update").build();
+                    return Response.status(404).entity("City Not Found").build();
                 }
-            } else {
-                return Response.status(404).entity("User Not Found").build();
+            } catch (SQLException | ClassNotFoundException e) {
+                return Response.status(500).entity("Internal Error During DB Interaction").build();
             }
-        } catch (SQLException | ClassNotFoundException e) {
-            return Response.status(500).entity("Internal Error During DB Interaction").build();
         }
     }
 
 
-
-    }
 

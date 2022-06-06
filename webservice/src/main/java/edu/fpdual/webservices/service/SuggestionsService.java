@@ -6,6 +6,7 @@ import edu.fpdual.webservices.model.manager.SuggestionsManager;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class SuggestionsService {
 
@@ -28,9 +29,36 @@ public class SuggestionsService {
 
     }
 
-    public Suggestion findSuggestion( String name) throws SQLException, ClassNotFoundException {
+    public Suggestion findSuggestion(Integer id) throws SQLException, ClassNotFoundException {
         try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
-            return suggestionsManager.findSuggestion(con,name);
+            return suggestionsManager.findSuggestion(con, id);
         }
+    }
+
+    public List<Suggestion> ListAll() throws SQLException, ClassNotFoundException {
+        try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
+            return suggestionsManager.ListAll(con);
+        }
+    }
+
+
+    public boolean delete(Suggestion sugu) throws SQLException, ClassNotFoundException {
+
+        try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
+            return suggestionsManager.delete(con,sugu);
+        }
+    }
+
+    public boolean update( Suggestion sugu) throws SQLException, ClassNotFoundException {
+        try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
+            return suggestionsManager.update(con, sugu);
+        }
+
+    }
+    public boolean validate(Integer id ) throws SQLException, ClassNotFoundException {
+        try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
+            return suggestionsManager.validate(con, id);
+        }
+
     }
 }

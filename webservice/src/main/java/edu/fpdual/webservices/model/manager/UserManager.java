@@ -30,13 +30,14 @@ public interface UserManager {
      */
     public int insertUser(Connection con, UserDao user)throws SQLException;
     /**
-     * player update num_game on DB
+     * find a player by id (idPlayer) on DB
      *
      * @param con DB connection
-     * @param name Entities name to use when player plays a new game.
-     * @return a {@link Boolean}
+     * @param id Entities id to use when player plays a new game.
+     * @return a {@link UserDao}
      */
-    public boolean updateNumGame(Connection con, String name)throws SQLException;
+    public UserDao findById(Connection con, Integer id)  throws SQLException, ClassNotFoundException;
+
     /**
      * Delete a user using their names.
      *
@@ -46,11 +47,11 @@ public interface UserManager {
      */
     public boolean deleteUser(Connection con, UserDao user) throws SQLException;
     /**
-     * Show the top ten users with the most games played
+     * update users
      *
      * @param con DB connection
      *
-     * @return a {@link List}
+     * @return a {@link boolean}
      */
 
     public boolean update(Connection con, UserDao user) throws SQLException;
@@ -58,10 +59,10 @@ public interface UserManager {
      * Validate that the password is correct.
      *
      * @param con DB connection
-     * @param password Entities id to delete.
+     * @param id Entities id to delete.
      * @return a {@link Boolean}
      */
-    public boolean validateUser(Connection con, String name,  String password) throws SQLException;
+    public boolean validateUser(Connection con, Integer id) throws SQLException;
 
 }
 

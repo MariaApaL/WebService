@@ -72,24 +72,40 @@ public class UserManagerImpl implements UserManager {
 
         }
     }
+
+
     @Override
-    public boolean updateNumGame(Connection con, String name) throws SQLException{
-
+    public UserDao findById(Connection con, Integer id) {
         //prepare SQL statement
-        String sql="Update player set num_game= (num_game +1)where player_name=?";
+        String sql = "select * "
+                + "from player "
+                + "where id = ? ";
 
-        //prepare SQL statement
-        try(PreparedStatement stmt=con.prepareStatement(sql)){
-
+        // Create general statement
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
             //Add Parameters
-            stmt.setString(1, name);
-
+            stmt.setInt(1, id);
             // Queries the DB
-            return stmt.executeUpdate() > 0;
+            ResultSet result = stmt.executeQuery();
+            // Set before first registry before going through it.
+            result.beforeFirst();
 
-        }catch(SQLException e){
-        return false;}
+            // Initialize variable
+            UserDao user = null;
 
+            // Run through each result
+            while (result.next()) {
+                // Initializes a city per result
+                user = new UserDao(result);
+
+            }
+
+            return user;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -111,36 +127,11 @@ public class UserManagerImpl implements UserManager {
         }
 
     }
-/*
-    @Override
-    public int numGame(Connection con, String name) throws SQLException {
-        //prepare SQL statement
-        String sql = "select num_game  from PLAYER  where player_name=?";
 
-        // Create general statement
-        try(PreparedStatement stmt=con.prepareStatement(sql)){
-
-            //Add Parameters
-            stmt.setString(1, name);
-
-            // Queries the DB
-            ResultSet result = stmt.executeQuery(sql);
-            // Set before first registry before going through it
-            result.beforeFirst();
-
-            // Queries the DB
-            return result.getInt(1);
-
-        }catch(SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-*/
     @Override
     public boolean update(Connection con, UserDao user) throws SQLException {
         //prepare SQL statement
-        String sql="Update player set password= ? , correo=? where player_name=?";
+        String sql="Update player set password= ? , correo=? where id=?";
 
 
             // Create general statement
@@ -149,7 +140,7 @@ public class UserManagerImpl implements UserManager {
                 //Add Parameters
                 stmt.setString(1, user.getPassword());
                 stmt.setString(2, user.getMail());
-                stmt.setString(3, user.getPlayer_name());
+                stmt.setInt(3, user.getIdplayer());
 
                 // Queries the DB
                 return stmt.executeUpdate() > 0;
@@ -161,19 +152,16 @@ public class UserManagerImpl implements UserManager {
 
     }
     @Override
-    public boolean validateUser(Connection con, String name, String password) throws SQLException{
+    public boolean validateUser(Connection con, Integer id) throws SQLException{
 
         //prepare SQL statement
         String sql = "select * "
                 + "from PLAYER "
-                + "where PLAYER_NAME = ? and password=?";
+                + "where idPlayer = ?";
 
-        // Create general statement
         try (PreparedStatement stmt = con.prepareStatement(sql)) {
             //Add Parameters
-            stmt.setString(1, name);
-            stmt.setString(2, password);
-
+            stmt.setInt(1, id);
             // Queries the DB
             ResultSet result = stmt.executeQuery();
             // Set before first registry before going through it.
@@ -182,9 +170,14 @@ public class UserManagerImpl implements UserManager {
             // Initialize variable
             UserDao user = null;
 
+            // Run through each result
+            while (result.next()) {
+                // Initializes a city per result
+                user = new UserDao(result);
 
+            }
 
-            return result.next();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();

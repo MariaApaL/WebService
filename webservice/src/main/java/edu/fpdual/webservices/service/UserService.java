@@ -1,6 +1,7 @@
 package edu.fpdual.webservices.service;
 
 
+import edu.fpdual.webservices.model.conector.MySQLConnector;
 import edu.fpdual.webservices.model.dao.UserDao;
 import edu.fpdual.webservices.model.manager.UserManager;
 
@@ -41,39 +42,29 @@ public class UserService {
 
     }
 
-/*
-    public boolean newGame(String name) throws SQLException, ClassNotFoundException{
 
-        try(Connection con=userManager.getConnector().getMySQLConnection()){
-            return userManager.updateNumGame(con, name);
+    public UserDao findById(Integer id) throws SQLException, ClassNotFoundException {
+        try (Connection con = userManager.getConnector().getMySQLConnection()) {
+            return userManager.findById(con, id);
         }
-
-
     }
-*/
+
     public boolean deleteUser(UserDao user) throws SQLException, ClassNotFoundException {
 
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
             return userManager.deleteUser(con,user);
         }
     }
-/*
-    public int numGame(String name) throws SQLException, ClassNotFoundException{
-        try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.numGame(con, name);
-        }
-    }
 
-*/
     public boolean update( UserDao user) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
             return userManager.update(con, user);
         }
 
     }
-    public boolean validateUser(String name, String password) throws SQLException, ClassNotFoundException {
+    public boolean validateUser(Integer id ) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.validateUser(con, name,password);
+            return userManager.validateUser(con, id);
         }
 
     }
