@@ -13,7 +13,7 @@ import java.util.List;
 public class UserManagerImpl implements UserManager {
 
     @Override
-    public UserDao findUser(Connection con, String player_name) {
+    public UserDao findByName(Connection con, String player_name) {
         //prepare SQL statement
         String sql = "select * "
                 + "from PLAYER "
@@ -43,7 +43,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public int insertUser(Connection con,UserDao user) {
+    public int insert(Connection con,UserDao user) {
         //prepare SQL statement
         String sql = "Insert into player (PLAYER_NAME, PASSWORD, NUM_GAME , correo) VALUES (?,?, 0,?)";
 
@@ -109,7 +109,7 @@ public class UserManagerImpl implements UserManager {
     }
 
     @Override
-    public boolean deleteUser(Connection con, UserDao user) throws SQLException {
+    public boolean delete(Connection con, UserDao user) throws SQLException {
         //prepare SQL statement
         String sql = "DELETE from player WHERE idplayer = ?";
 
@@ -152,7 +152,7 @@ public class UserManagerImpl implements UserManager {
 
     }
     @Override
-    public boolean validateUser(Connection con, Integer id) throws SQLException{
+    public boolean validate(Connection con, Integer id) throws SQLException{
 
         //prepare SQL statement
         String sql = "select * "

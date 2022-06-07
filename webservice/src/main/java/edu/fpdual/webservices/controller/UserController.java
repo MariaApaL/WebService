@@ -18,21 +18,21 @@ import java.sql.SQLException;
 public class UserController{
 
     private final UserService userService;
-   // private final SuggestionsService suggestionsService;
+
 
 
     public UserController() {
 
         this.userService = new UserService(new UserManagerImpl());
-       // this.suggestionsService = new SuggestionsService((new SuggestionsManagerImpl()));
+
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{name}")
-    public Response findUser(@PathParam("name") String name) throws SQLException, ClassNotFoundException {
-        return Response.ok().entity(userService.findUser(name)).build();
+    public Response findByUser(@PathParam("name") String name) throws SQLException, ClassNotFoundException {
+        return Response.ok().entity(userService.findByName(name)).build();
     }
 
     @GET
@@ -56,22 +56,22 @@ public class UserController{
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/validate")
 
-    public Response validateUser(UserDao user) throws SQLException, ClassNotFoundException {
+    public Response validate(UserDao user) throws SQLException, ClassNotFoundException {
         if (user==null) {
             return Response.status(400).entity("Incorrect Parameters").build();
         } else {
-            return Response.ok().entity(userService.validateUser(user.getIdplayer())).build();
+            return Response.ok().entity(userService.validate(user.getIdplayer())).build();
         }
     }
 
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteUser(UserDao user) {
+    public Response delete(UserDao user) {
         try {
-            boolean delete = userService.validateUser(user.getIdplayer());
+            boolean delete = userService.validate(user.getIdplayer());
             if (delete) {
-                if (userService.deleteUser(user) ){
+                if (userService.delete(user) ){
                     return Response.status(200).entity(user).build();
                 } else {
                     return Response.status(304).entity("User Was Not Deleted").build();
@@ -87,11 +87,11 @@ public class UserController{
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response insertUserReg(UserDao user) {
+    public Response insert(UserDao user) {
         try {
-            int registedUser = userService.insertUserReg(user);
+            int registedUser = userService.insert(user);
             if (registedUser > 1) {
-                return Response.status(201).entity(userService.findUser(user.getPlayer_name())).build();
+                return Response.status(201).entity(userService.findByName(user.getPlayer_name())).build();
             } else {
                 return Response.status(500).entity("Internal Error During Creating New User").build();
             }

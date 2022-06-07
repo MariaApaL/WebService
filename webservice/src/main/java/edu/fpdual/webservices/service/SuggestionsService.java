@@ -29,9 +29,9 @@ public class SuggestionsService {
 
     }
 
-    public Suggestion findSuggestion(Integer id) throws SQLException, ClassNotFoundException {
+    public Suggestion findById(Integer id) throws SQLException, ClassNotFoundException {
         try (Connection con = suggestionsManager.getConnector().getMySQLConnection()) {
-            return suggestionsManager.findSuggestion(con, id);
+            return suggestionsManager.findById(con, id);
         }
     }
 

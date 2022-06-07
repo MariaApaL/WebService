@@ -48,7 +48,7 @@ public class SuggestionsManagerImpl implements SuggestionsManager {
     }
 
     @Override
-    public Suggestion findSuggestion (Connection con, Integer id) {
+    public Suggestion findById (Connection con, Integer id) {
         //prepare SQL statement
         String sql = "select * "
                 + "from suggestions "
@@ -185,5 +185,10 @@ public class SuggestionsManagerImpl implements SuggestionsManager {
     @Override
     public MySQLConnector getConnector() {
         return new MySQLConnector();
+    }
+
+    @Override
+    public int insert(Connection con, Suggestion entity) throws SQLException {
+        return 0;
     }
 }

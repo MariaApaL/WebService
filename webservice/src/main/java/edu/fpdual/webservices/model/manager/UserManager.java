@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface UserManager {
+public interface UserManager extends Manager<UserDao,Integer> {
     /**
      * Validates that the user exist.
      *
@@ -16,53 +16,7 @@ public interface UserManager {
      * @param player_name The entity to check
      * @return a {@link Boolean}
      */
-    public UserDao findUser(Connection con, String player_name);
-
-
-
-    public MySQLConnector getConnector();
-    /**
-     * Insert a new user on DB
-     *
-     * @param con DB connection
-
-     * @return a {@link Boolean}
-     */
-    public int insertUser(Connection con, UserDao user)throws SQLException;
-    /**
-     * find a player by id (idPlayer) on DB
-     *
-     * @param con DB connection
-     * @param id Entities id to use when player plays a new game.
-     * @return a {@link UserDao}
-     */
-    public UserDao findById(Connection con, Integer id)  throws SQLException, ClassNotFoundException;
-
-    /**
-     * Delete a user using their names.
-     *
-     * @param con DB connection
-     * Using App.getPlayerName to delete.
-     * @return a {@link Boolean}
-     */
-    public boolean deleteUser(Connection con, UserDao user) throws SQLException;
-    /**
-     * update users
-     *
-     * @param con DB connection
-     *
-     * @return a {@link boolean}
-     */
-
-    public boolean update(Connection con, UserDao user) throws SQLException;
-    /**
-     * Validate that the password is correct.
-     *
-     * @param con DB connection
-     * @param id Entities id to delete.
-     * @return a {@link Boolean}
-     */
-    public boolean validateUser(Connection con, Integer id) throws SQLException;
+     UserDao findByName(Connection con, String player_name);
 
 }
 

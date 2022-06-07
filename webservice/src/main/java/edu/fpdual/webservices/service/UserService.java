@@ -20,10 +20,10 @@ public class UserService {
     }
 
 
-    public UserDao findUser(String name) throws SQLException, ClassNotFoundException {
+    public UserDao findByName(String name) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
 
-            return userManager.findUser(con, name);
+            return userManager.findByName(con, name);
 
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -33,9 +33,9 @@ public class UserService {
 
 
 
-    public int insertUserReg(UserDao user) throws SQLException,ClassNotFoundException{
+    public int insert(UserDao user) throws SQLException,ClassNotFoundException{
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.insertUser(con,user);
+            return userManager.insert(con,user);
 
 
         }
@@ -49,10 +49,10 @@ public class UserService {
         }
     }
 
-    public boolean deleteUser(UserDao user) throws SQLException, ClassNotFoundException {
+    public boolean delete(UserDao user) throws SQLException, ClassNotFoundException {
 
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.deleteUser(con,user);
+            return userManager.delete(con,user);
         }
     }
 
@@ -62,9 +62,9 @@ public class UserService {
         }
 
     }
-    public boolean validateUser(Integer id ) throws SQLException, ClassNotFoundException {
+    public boolean validate(Integer id ) throws SQLException, ClassNotFoundException {
         try (Connection con = userManager.getConnector().getMySQLConnection()) {
-            return userManager.validateUser(con, id);
+            return userManager.validate(con, id);
         }
 
     }
